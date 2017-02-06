@@ -13,5 +13,13 @@ class NewsCell: UITableViewCell {
     @IBOutlet weak var thumbImg: UIImageView!
     @IBOutlet weak var newsTitle: UILabel!
     @IBOutlet weak var newsAuthor: UILabel!
+    
+    func configureCell(news: News) {
+        
+        
+        newsTitle.text = news.text
+        newsAuthor.text = "By \(news.author)"
+        
+    }
 
 }

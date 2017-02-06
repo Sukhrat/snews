@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
@@ -16,24 +17,73 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBOutlet weak var latestTitle: UILabel!
     @IBOutlet weak var tableView: UITableView!
     
-
+    private var newsArticles = [News]()
+    
+    private var latestNews: LatestNews!
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
+        
+        //why we should initialize it again?
+        latestNews = LatestNews()
+            self.downloadLatestNews() {
+                //find
+                self.latestNews.downloadLatest {
+                    self.updateMainUI()
+                }
+            
+        }
+        
+            
+        
+    }
+    
+    func downloadLatestNews(completed: @escaping DownloadComplete) {
+        
+        let url = "\(BASE_URL)\(API_KEY)"
+        Alamofire.request(url).responseJSON { (response) in
+            let result = response.result
+            
+            if let dict = result.value as? Dictionary<String, AnyObject> {
+                if let articles = dict["articles"] as? [Dictionary<String, AnyObject>] {
+                    for article in articles {
+                        let news = News(newsDict: article)
+                        self.newsArticles.append(news)
+                        
+                    }
+                    self.tableView.reloadData()
+                }
+            }
+            completed()
+        }
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "NewsCell", for: indexPath) as? NewsCell {
+            let news = newsArticles[indexPath.row]
+            cell.configureCell(news: news)
+            return cell
+        }
         return NewsCell()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return newsArticles.count
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
+    }
+    
+    func updateMainUI() {
+        if let imageData: NSData = NSData(contentsOf: self.latestNews.imageUrl) {
+            latestNewsImg.image = UIImage(data: imageData as Data)
+        }
+        self.latestTitle.text = self.latestNews.description
+        self.latestAuthor.text = self.latestNews.author
+        
     }
 
 }
