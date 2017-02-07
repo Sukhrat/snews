@@ -52,6 +52,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                         self.newsArticles.append(news)
                         
                     }
+                    self.newsArticles.remove(at: 0)
                     self.tableView.reloadData()
                 }
             }
@@ -78,7 +79,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func updateMainUI() {
-        if let imageData: NSData = NSData(contentsOf: self.latestNews.imageUrl) {
+        let url = URL(string: self.latestNews.imageUrl)
+        if let imageData: NSData = NSData(contentsOf: url!) {
             latestNewsImg.image = UIImage(data: imageData as Data)
         }
         self.latestTitle.text = self.latestNews.description

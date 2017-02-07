@@ -14,7 +14,7 @@ class LatestNews {
     private var _author: String!
     private var _title: String!
     private var _description: String!
-    private var _imageUrl: URL!
+    private var _imageUrl: String!
     
     var author: String {
         
@@ -39,9 +39,9 @@ class LatestNews {
         return self._title
     }
     
-    var imageUrl: URL {
+    var imageUrl: String {
         if self._imageUrl == nil {
-            self._imageUrl = URL(fileURLWithPath: "")
+            self._imageUrl = "https://storage.googleapis.com/gweb-uniblog-publish-prod/static/blog/images/google-200x200.7714256da16f.png"
         }
         return self._imageUrl
     }
@@ -65,8 +65,10 @@ class LatestNews {
                         if let title = latest["title"] as? String {
                             self._title = title
                         }
-                        if let imageUrl = latest["urlToImage"]  as? URL{
+                        if let imageUrl = latest["urlToImage"]  as? String {
                             self._imageUrl = imageUrl
+                        } else {
+                            //self._imageUrl = URL(string: "https://storage.googleapis.com/gweb-uniblog-publish-prod/static/blog/images/google-200x200.7714256da16f.png")
                         }
                         
                     }

@@ -16,7 +16,10 @@ class NewsCell: UITableViewCell {
     
     func configureCell(news: News) {
         
-        
+        let url = URL(string: news.imageUrl)
+        if let imageData: NSData = NSData(contentsOf: url!) {
+            thumbImg.image = UIImage(data: imageData as Data)
+        }
         newsTitle.text = news.text
         newsAuthor.text = "By \(news.author)"
         

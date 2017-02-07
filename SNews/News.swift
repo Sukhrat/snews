@@ -13,7 +13,7 @@ class News {
     private var _author: String!
     private var _text: String!
     private var _title: String!
-    private var _imageUrl: URL!
+    private var _imageUrl: String!
     
      var author: String {
     
@@ -38,9 +38,9 @@ class News {
         return self._title
     }
     
-     var imageUrl: URL {
+     var imageUrl: String {
         if self._imageUrl == nil {
-            self._imageUrl = URL(fileURLWithPath: "")
+            self._imageUrl = ""
         }
         return self._imageUrl
     }
@@ -56,7 +56,7 @@ class News {
             self._text = description
         }
             
-        if let imageUrl = newsDict["urlToImage"] as? URL {
+        if let imageUrl = newsDict["urlToImage"] as? String {
             self._imageUrl = imageUrl
         }
             
