@@ -20,6 +20,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     private var newsArticles = [News]()
     
     private var latestNews: LatestNews!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
@@ -92,15 +93,25 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 if let news = sender as? News {
                     newsVC.news = news
                 }
+                if let latestNews = sender as? LatestNews {
+                    newsVC.latestNews = latestNews
+                }
             }
         }
     }
     
+    @IBAction func latestNewsPressed(_ sender: UIButton) {
+        
+        performSegue(withIdentifier: "ShowNews", sender: latestNews)
+        
+    }
+    
     func updateMainUI() {
-        let url = URL(string: self.latestNews.imageUrl)
-        if let imageData: NSData = NSData(contentsOf: url!) {
-            latestNewsImg.image = UIImage(data: imageData as Data)
-        }
+//        let url = URL(string: self.latestNews.imageUrl)
+//        if let imageData: NSData = NSData(contentsOf: url!) {
+//            latestNewsImg.image = UIImage(data: imageData as Data)
+//        }
+        latestNewsImg.sd_setImage(with: URL(string: latestNews.imageUrl), placeholderImage: UIImage(named: "news.png"))
         self.latestTitle.text = self.latestNews.description
         self.latestAuthor.text = self.latestNews.author
         

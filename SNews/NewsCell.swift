@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class NewsCell: UITableViewCell {
 
@@ -14,17 +15,18 @@ class NewsCell: UITableViewCell {
     @IBOutlet weak var newsTitle: UILabel!
     @IBOutlet weak var newsAuthor: UILabel!
     
+    
     func configureCell(news: News) {
         
-        let queue = DispatchQueue(label: "com.sukhrat.snews")
-        
-        queue.async {
-            let url = URL(string: news.imageUrl)
-            if let imageData: NSData = NSData(contentsOf: url!) {
-                self.thumbImg.image = UIImage(data: imageData as Data)
-            }
-        }
-        
+//        let queue = DispatchQueue(label: "com.sukhrat.snews")
+//        
+//        queue.async {
+//            let url = URL(string: news.imageUrl)
+//            if let imageData: NSData = NSData(contentsOf: url!) {
+//                self.thumbImg.image = UIImage(data: imageData as Data)
+//            }
+//        }
+        thumbImg.sd_setImage(with: URL(string: news.imageUrl), placeholderImage: UIImage(named: "news.png"))
         
         newsTitle.text = news.text
         newsAuthor.text = "By \(news.author)"

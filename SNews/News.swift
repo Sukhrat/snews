@@ -14,6 +14,7 @@ class News {
     private var _text: String!
     private var _title: String!
     private var _imageUrl: String!
+    private var _description: String!
     
      var author: String {
     
@@ -45,6 +46,15 @@ class News {
         return self._imageUrl
     }
     
+    var description: String {
+        
+        if self._description == nil {
+            self._description = ""
+        }
+        return self._description
+        
+    }
+    
     init(newsDict: Dictionary<String, AnyObject>) {
         
             
@@ -52,12 +62,16 @@ class News {
             self._author = author
         }
             
-        if let description = newsDict["description"] as? String {
-            self._text = description
+        if let title = newsDict["title"] as? String {
+            self._text = title
         }
             
         if let imageUrl = newsDict["urlToImage"] as? String {
             self._imageUrl = imageUrl
+        }
+        
+        if let description = newsDict["description"] as? String {
+            self._description = description
         }
             
         
