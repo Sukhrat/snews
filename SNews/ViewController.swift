@@ -78,6 +78,24 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         return 1
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        var news: News!
+        news = newsArticles[indexPath.row]
+        performSegue(withIdentifier: "ShowNews", sender: news)
+        
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ShowNews" {
+            if let newsVC = segue.destination as? NewsVC {
+                if let news = sender as? News {
+                    newsVC.news = news
+                }
+            }
+        }
+    }
+    
     func updateMainUI() {
         let url = URL(string: self.latestNews.imageUrl)
         if let imageData: NSData = NSData(contentsOf: url!) {
